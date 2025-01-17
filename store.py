@@ -57,3 +57,4 @@ class Store:
             total += product.buy(quantity)
         return total
 
+

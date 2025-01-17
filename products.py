@@ -1,17 +1,23 @@
 class Product:
     def __init__(self, name: str, price: float, quantity: int):
         """ Validate inputs """
-        if not name:
-            raise ValueError("Name cannot be empty")
-        if price < 0:
-            raise ValueError("Price cannot be negative")
-        if quantity < 0:
-            raise ValueError("Quantity cannot be negative")
-        # Initialize instance variables
-        self.name = name
-        self.price = price
-        self.quantity = quantity
-        self.active = True
+        try:
+            if not name:
+                raise ValueError("Name cannot be empty")
+            if price < 0:
+                raise ValueError("Price cannot be negative")
+            if quantity < 0:
+                raise ValueError("Quantity cannot be negative")
+            # Initialize instance variables
+            self.name = name
+            self.price = price
+            self.quantity = quantity
+            if quantity == 0:
+                self.active = False
+            else:
+                self.active = True
+        except ValueError as e:
+            print(e)
 
 
     def get_quantity(self) -> float:
@@ -21,6 +27,8 @@ class Product:
 
     def set_quantity(self, quantity):
         """ This function update the quantity from a product"""
+        if quantity < 0:
+            raise ValueError("Quantity cannot be negative")
         self.quantity = quantity
         if self.quantity == 0:
             self.active = False
@@ -46,17 +54,16 @@ class Product:
         return f"{self.name}, Price: {self.price}, Quantity: {self.quantity}"
 
 
-    def buy(self, quantity) -> float:
+    def buy(self, buy_quantity) -> float:
         """ This function buy a product"""
-        try:
-            if self.quantity > quantity and self.active:
-                self.quantity -= quantity
-                return self.price * quantity
-            if self.quantity == quantity:
-                self.quantity = 0
-                self.deactivate()
-                return self.price * quantity
-            raise ValueError("Insufficient quantity")
-        except ValueError as e:
-            print(e)
-            return 0
+
+        if self.quantity > buy_quantity and self.active:
+            self.quantity -= buy_quantity
+            return self.price * buy_quantity
+        if self.quantity == buy_quantity and self.active:
+            self.quantity = 0
+            self.deactivate()
+            return self.price * buy_quantity
+        raise ValueError("Insufficient quantity")
+
+

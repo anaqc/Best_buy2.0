@@ -55,6 +55,7 @@ def make_order(store):
         except ValueError as e:
             print(e)
 
+
 def verify_quantity(list_order) ->bool:
     """ This function verify if the product quantity in the order exist"""
     for product, quantity in list_order:
@@ -74,6 +75,7 @@ def validate_user_input(dic_menu):
             raise ValueError("Error with your choice!")
         except Exception as e:
             print(f"{e} Try again!")
+
 
 def start(store):
     """ This function gek the store object as parameter and show the following menu"""
