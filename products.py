@@ -16,8 +16,16 @@ class Product:
                 self.active = False
             else:
                 self.active = True
+            self.promotion = None
         except ValueError as e:
             print(e)
+
+    def get_promotion(self):
+        return self.promotion
+
+
+    def set_promotion(self, new_promotion):
+        self.promotion = new_promotion
 
 
     def get_quantity(self) -> float:
@@ -51,11 +59,17 @@ class Product:
 
     def show(self) -> str:
         """ This function return a string with the product information"""
-        return f"{self.name}, Price: {self.price}, Quantity: {self.quantity}"
+        type_promotion = ""
+        if self.get_promotion() is not None:
+            type_promotion = f", Promotion: {self.get_promotion().name}"
+        return f"{self.name}, Price: {self.price}, Quantity: {self.quantity}{type_promotion}"
 
 
     def buy(self, buy_quantity) -> float:
         """ This function buy a product"""
+        if self.get_promotion() is not None:
+            self.quantity -= buy_quantity
+            return self.promotion.apply_promotion(self, buy_quantity)
         if self.quantity > buy_quantity and self.active:
             self.quantity -= buy_quantity
             return self.price * buy_quantity
@@ -66,6 +80,10 @@ class Product:
         raise ValueError("Insufficient quantity")
 
 
+    def add_promotion(self):
+        pass
+
+
 class NonStockedProduct(Product):
     def __init__(self, name, price):
         quantity = 0
@@ -74,12 +92,17 @@ class NonStockedProduct(Product):
 
     def buy(self, buy_quantity) -> float:
         """ This function buy a product"""
+        if self.get_promotion() is not None:
+            return self.promotion.apply_promotion(self, buy_quantity)
         return self.price * buy_quantity
 
 
     def show(self) -> str:
         """ This function return a string with the product information"""
-        return f"{self.name}, Price: {self.price}"
+        type_promotion = ""
+        if self.get_promotion() is not None:
+            type_promotion = f", Promotion: {self.get_promotion().name}"
+        return f"{self.name}, Price: {self.price}{type_promotion}"
 
 
 class LimitedProduct(Product):
@@ -90,14 +113,17 @@ class LimitedProduct(Product):
 
     def show(self) -> str:
         """ This function return a string with the product information"""
-        return f"{self.name}, Price: {self.price}, Quantity: {self.quantity}, Maximum: {self.maximum}"
+        type_promotion = ""
+        if self.get_promotion() is not None:
+            type_promotion = f", Promotion: {self.get_promotion().name}"
+        return (f"{self.name}, Price: {self.price}, Quantity: {self.quantity}, "
+                f"Maximum: {self.maximum}{type_promotion}")
 
 
     def buy(self, buy_quantity) -> float:
         """ This function buy a product"""
-        if self.maximum == buy_quantity and self.active:
-            self.quantity -= buy_quantity
-            return self.price * buy_quantity
+        if self.maximum == buy_quantity:
+            return super().buy(buy_quantity)
         raise ValueError("Error Limited product")
 
 
