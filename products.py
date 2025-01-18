@@ -1,5 +1,5 @@
 class Product:
-    def __init__(self, name: str, price: float, quantity: int):
+    def __init__(self, name: str, price: float, quantity=None):
         """ Validate inputs """
         try:
             if not name:
@@ -65,5 +65,28 @@ class Product:
             self.deactivate()
             return self.price * buy_quantity
         raise ValueError("Insufficient quantity")
+
+
+class NonStockedProduct(Product):
+    def __init__(self, name, price):
+        quantity = 0
+        super().__init__(name, price, quantity)
+        self.active = True
+
+
+    def show(self) -> str:
+        """ This function return a string with the product information"""
+        return f"{self.name}, Price: {self.price}"
+
+
+class LimitedProduct(Product):
+    def __init__(self, name, price, quantity, maximum):
+        super().__init__(name, price, quantity)
+        self.maximum = maximum
+
+
+    def show(self) -> str:
+        """ This function return a string with the product information"""
+        return f"{self.name}, Price: {self.price}, Quantity: {self.quantity}, Maximum: {self.maximum}"
 
 
