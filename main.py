@@ -54,12 +54,13 @@ def make_order(store):
             raise ValueError("Error adding product!")
         except ValueError as e:
             print(e)
+            break
 
 
 def verify_quantity(list_order) ->bool:
     """ This function verify if the product quantity in the order exist"""
     for product, quantity in list_order:
-        if quantity > product.quantity:
+        if quantity > product.quantity and type(product) != products.NonStockedProduct:
             return False
     return True
 
