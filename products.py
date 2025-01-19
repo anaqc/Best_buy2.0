@@ -108,17 +108,19 @@ class Product:
 
     def buy(self, buy_quantity) -> float:
         """ This function buy a product"""
-        if self.promotion is not None:
-            self.quantity = self.quantity - buy_quantity
-            return self.promotion.apply_promotion(self, buy_quantity)
-        if self.quantity > buy_quantity and self.active:
-            self.quantity = self.quantity - buy_quantity
-            return self.price * buy_quantity
-        if self.quantity == buy_quantity and self.active:
-            self.quantity = 0
+        if buy_quantity <= 0:
+            raise ValueError("Buy Quantity cannot be negative")
+        if buy_quantity > self.quantity:
+            raise ValueError("Insufficient quantity")
+        if not self.is_active():
+            raise ValueError("Product is not active")
+        self.quantity = self.quantity - buy_quantity
+        if self.quantity == 0:
             self.deactivate()
-            return self.price * buy_quantity
-        raise ValueError("Insufficient quantity")
+        if self.promotion is not None:
+            return self.promotion.apply_promotion(self, buy_quantity)
+        return self.price * buy_quantity
+
 
 
 class NonStockedProduct(Product):

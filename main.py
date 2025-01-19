@@ -112,8 +112,8 @@ def main():
     mac = products.Product("MacBook Air M2", price=1450, quantity=100)
     bose = products.Product("Bose QuietComfort Earbuds", price=250, quantity=500)
     pixel = products.LimitedProduct("Google Pixel 7", price=500, quantity=250, maximum=1)
-
     product_list = [mac, bose]
+
     # Create promotion catalog
     second_half_price = promotions.SecondHalfPrice("Second Half price!")
     third_one_free = promotions.ThirdOneFree("Third One Free!")
@@ -121,16 +121,13 @@ def main():
 
     # Add promotions to products
     product_list[0].promotion = second_half_price
-    #product_list[1].promotion = third_one_free
-    #product_list[3].promotion = thirty_percent
+    product_list[1].promotion = third_one_free
+    # create store instances
     best_buy = store.Store(product_list)
     best_buy2 = store.Store([pixel])
-    mac.price = -100  # Should give error
-    print(mac)
-    print(mac > bose)  # Should print True
-    print(mac in best_buy)  # Should print True
-    print(pixel in best_buy)  # Should print False
+
     best_buy = best_buy + best_buy2
+
     start(best_buy)
 
 
