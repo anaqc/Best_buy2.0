@@ -3,7 +3,18 @@ from abc import ABC, abstractmethod
 
 class Promotion(ABC):
     def __init__(self, name):
-        self.name = name
+        """ Initialize instance variables"""
+        self._name = name
+
+
+    @property
+    def name(self):
+        return self._name
+
+
+    @name.setter
+    def name(self, new_name_promotion):
+        self._name = new_name_promotion
 
 
     def apply_promotion(self, product, quantity):
@@ -29,6 +40,7 @@ class ThirdOneFree(Promotion):
 
 class PercentDiscount(Promotion):
     def __init__(self,name, percent):
+        """ Initialize instance variables"""
         super().__init__(name)
         self.percent = percent
 

@@ -20,9 +20,16 @@ def test_creating_product_with_invalid_name():
 
 def test_creating_product_with_negative_price():
     assert products.Product("MacBook Air M2", -10, 100)
+
+
+def test_creating_product_with_negative_quantity():
+    assert products.Product("MacBook Air M2", 10, -100)
+
+
+def test_set_quantity_negative():
     product = test_store.get_product_by_index(0)
     with pytest.raises(ValueError, match="Quantity cannot be negative"):
-        product.set_quantity(-10)
+        product.quantity =-10
 
 
 def test_product_quantity_is_0_and_inactive():

@@ -4,6 +4,18 @@ class Store:
         self.list_products = list_products
 
 
+    def __contains__(self, product):
+        """ This function check if a product exists in store using the in operator"""
+        return product in self.list_products
+
+    def __add__(self, other):
+        """ This function combine two stores using the + operator"""
+        new_list = other.list_products
+        for other_product in self.list_products:
+            new_list.append(other_product)
+        return Store(new_list)
+
+
     def add_product(self, product):
         """ Thia function add a product to list_products"""
         self.list_products.append(product)
